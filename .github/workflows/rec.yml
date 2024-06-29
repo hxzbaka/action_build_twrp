@@ -1,0 +1,17 @@
+name: Make
+
+on:
+  watch:
+    types: [started]
+    
+jobs:
+  build:
+    if: github.event.repository.owner.id == github.event.sender.id
+    runs-on: ubuntu-20.04
+    
+    steps:
+    - name: Check Out
+      uses: actions/checkout@main
+      
+    - name: Setup Debug Session
+      uses: csexton/debugger-action@master
