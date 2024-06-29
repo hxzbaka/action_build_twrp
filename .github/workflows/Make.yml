@@ -23,6 +23,7 @@ jobs:
         sudo apt -y autoclean
         sudo apt clean
         sudo apt update
+        sudo apt-get -y purge temurin-*
       
     - name: Install packages
       run: |
@@ -111,29 +112,29 @@ jobs:
     - name: Setup Debug Session
       uses: csexton/debugger-action@master
        
-#    - name: Start Building (Normal Mode)
-#      if: steps.var.outputs.use_omin_head == 'false'
-#      run: |
-#        PATH=~/bin:$PATH
-#        cd ${{ steps.pwd.outputs.pwd }}
-#        tree ./device
-#        export ALLOW_MISSING_DEPENDENCIES=true
-#        source build/envsetup.sh
-#        lunch ${{ steps.var.outputs.device_code }}-eng 
-#        make clean
-#        make recoveryimage -j$(nproc --all)
+    - name: Start Building (Normal Mode)
+      if: steps.var.outputs.use_omin_head == 'false'
+      run: |
+        PATH=~/bin:$PATH
+        cd ${{ steps.pwd.outputs.pwd }}
+        tree ./device
+        export ALLOW_MISSING_DEPENDENCIES=true
+        source build/envsetup.sh
+        lunch ${{ steps.var.outputs.device_code }}-eng 
+        make clean
+        make recoveryimage -j$(nproc --all)
         
-#    - name: Start Building (Omni Mode)
-#      if: steps.var.outputs.use_omin_head == 'true'
-#      run: |
-#        PATH=~/bin:$PATH
-#        cd ${{ steps.pwd.outputs.pwd }}
-#        tree ./device
-#        export ALLOW_MISSING_DEPENDENCIES=true
-#        source build/envsetup.sh
-#        lunch omni_${{ steps.var.outputs.device_code }}-eng 
-#        make clean
-#        make recoveryimage -j$(nproc --all)            
+    - name: Start Building (Omni Mode)
+      if: steps.var.outputs.use_omin_head == 'true'
+      run: |
+        PATH=~/bin:$PATH
+        cd ${{ steps.pwd.outputs.pwd }}
+        tree ./device
+        export ALLOW_MISSING_DEPENDENCIES=true
+        source build/envsetup.sh
+        lunch omni_${{ steps.var.outputs.device_code }}-eng 
+        make clean
+        make recoveryimage -j$(nproc --all)            
       
     - name: Upload File to Release
       uses: softprops/action-gh-release@v1
