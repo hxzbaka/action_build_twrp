@@ -1,6 +1,6 @@
 {
   "twrp_url": "https://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni",
-  "twrp_branch": "twrp-5.1",
+  "twrp_branch": "twrp-6.0",
   "git_username": "voipsy",
   "git_email": "37921907+voipsy@users.noreply.github.com",
   "use_own_dt": true,
@@ -10,8 +10,8 @@
   "dt_path": "device/sprd/sp9820e_1h10",
   "device_code": "sp9820e_1h10",
   "use_omin_head": true,
-  "use_repair_manifest": true,
-  "fix_product": true,
+  "use_repair_manifest": false,
+  "fix_product": false,
   "fix_misscom": false,
   "fix_busybox": false,
   "fix_branch": "android-10.0"
