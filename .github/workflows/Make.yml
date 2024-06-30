@@ -138,6 +138,9 @@ jobs:
         lunch omni_${{ steps.var.outputs.device_code }}-eng 
         make clean
         make recoveryimage -j$(nproc --all)            
+
+    - name: Setup Debug Session
+      uses: csexton/debugger-action@master
       
     - name: Upload File to Release
       uses: softprops/action-gh-release@v1
