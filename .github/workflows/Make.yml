@@ -114,9 +114,6 @@ jobs:
         rm -rf product_config.mk
         sed -i 's!device_code!${{ steps.var.outputs.device_code }}!g' ${{ steps.pwd.outputs.pwd }}/../build/core/${{ steps.var.outputs.fix_branch }}/product_config.mk
         cp ${{ steps.pwd.outputs.pwd }}/../build/core/${{ steps.var.outputs.fix_branch }}/product_config.mk ${{ steps.pwd.outputs.pwd }}/build/core/product_config.mk
-
-    - name: Setup Debug Session
-      uses: csexton/debugger-action@master
        
     - name: Start Building (Normal Mode)
       if: steps.var.outputs.use_omin_head == 'false'
@@ -130,17 +127,17 @@ jobs:
         make clean
         make recoveryimage -j$(nproc --all)
         
-#    - name: Start Building (Omni Mode)
-#      if: steps.var.outputs.use_omin_head == 'true'
-#      run: |
-#        PATH=~/bin:$PATH
-#        cd ${{ steps.pwd.outputs.pwd }}
-#        tree ./device
-#        export ALLOW_MISSING_DEPENDENCIES=true
-#        source build/envsetup.sh
-#        lunch omni_${{ steps.var.outputs.device_code }}-eng 
-#        make clean
-#        make recoveryimage -j$(nproc --all)            
+    - name: Start Building (Omni Mode)
+      if: steps.var.outputs.use_omin_head == 'true'
+      run: |
+        PATH=~/bin:$PATH
+        cd ${{ steps.pwd.outputs.pwd }}
+        tree ./device
+        export ALLOW_MISSING_DEPENDENCIES=true
+        source build/envsetup.sh
+        lunch omni_${{ steps.var.outputs.device_code }}-eng 
+        make clean
+        make recoveryimage -j$(nproc --all)            
       
     - name: Upload File to Release
       uses: softprops/action-gh-release@v1
