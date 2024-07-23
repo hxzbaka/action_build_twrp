@@ -63,10 +63,10 @@ jobs:
       
     - name: Install Repo
       run: |
-        mkdir ~/bin
-        curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
-        chmod a+x ~/bin/repo
-        export PATH=~/bin:$PATH
+        sudo mkdir ~/bin
+        sudo curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+        sudo chmod a+x ~/bin/repo
+        sudo export PATH=~/bin:$PATH
         
     - name: Initialize Repair Manifest
       if: steps.var.outputs.use_repair_manifest == 'true'
@@ -75,14 +75,14 @@ jobs:
     - name: Initialize a Repo client
       run: |
         echo "The automatic repair option is turned off, so the Repair Manifest will not be pulled."
-        PATH=~/bin:$PATH
-        mkdir workspace
+        sudo PATH=~/bin:$PATH
+        sudo mkdir workspace
         cd workspace
         echo "::set-output name=pwd::$(pwd)"
-        git config --global user.name "${{ steps.var.outputs.git_username }}"
-        git config --global user.email "${{ steps.var.outputs.git_email }}"
-        repo init --depth=1 -u ${{ steps.var.outputs.twrp_url }} -b ${{ steps.var.outputs.twrp_branch }}
-        mkdir .repo/local_manifests
+        sudo git config --global user.name "${{ steps.var.outputs.git_username }}"
+        sudo git config --global user.email "${{ steps.var.outputs.git_email }}"
+        sudo repo init --depth=1 -u ${{ steps.var.outputs.twrp_url }} -b ${{ steps.var.outputs.twrp_branch }}
+        sudo mkdir .repo/local_manifests
       id: pwd
       
     - name: Fix the bug of missing common
@@ -104,42 +104,42 @@ jobs:
           
     - name: Sync from manifest
       run: |
-        PATH=~/bin:$PATH
+        sudo PATH=~/bin:$PATH
         cd workspace
-        repo sync -j$(nproc --all) -f --force-sync
+        sudo repo sync -j$(nproc --all) -f --force-sync
         ls -al
         
     - name: Fix cannot locate product
       if: steps.var.outputs.use_repair_manifest == 'true' && steps.var.outputs.fix_product == 'true'
       run: |
         cd ${{ steps.pwd.outputs.pwd }}/build/core
-        rm -rf product_config.mk
-        sed -i 's!device_code!${{ steps.var.outputs.device_code }}!g' ${{ steps.pwd.outputs.pwd }}/../build/core/${{ steps.var.outputs.fix_branch }}/product_config.mk
-        cp ${{ steps.pwd.outputs.pwd }}/../build/core/${{ steps.var.outputs.fix_branch }}/product_config.mk ${{ steps.pwd.outputs.pwd }}/build/core/product_config.mk
+        sudo rm -rf product_config.mk
+        sudo sed -i 's!device_code!${{ steps.var.outputs.device_code }}!g' ${{ steps.pwd.outputs.pwd }}/../build/core/${{ steps.var.outputs.fix_branch }}/product_config.mk
+        sudo cp ${{ steps.pwd.outputs.pwd }}/../build/core/${{ steps.var.outputs.fix_branch }}/product_config.mk ${{ steps.pwd.outputs.pwd }}/build/core/product_config.mk
        
     - name: Start Building (Normal Mode)
       if: steps.var.outputs.use_omin_head == 'false'
       run: |
-        PATH=~/bin:$PATH
+        sudo PATH=~/bin:$PATH
         cd ${{ steps.pwd.outputs.pwd }}
         tree ./device
         export ALLOW_MISSING_DEPENDENCIES=true
-        source build/envsetup.sh
-        lunch ${{ steps.var.outputs.device_code }}-eng 
-        make clean
-        make recoveryimage -j$(nproc --all)
+        sudo source build/envsetup.sh
+        sudo lunch ${{ steps.var.outputs.device_code }}-eng 
+        sudo make clean
+        sudo make recoveryimage -j$(nproc --all)
         
     - name: Start Building (Omni Mode)
       if: steps.var.outputs.use_omin_head == 'true'
       run: |
-        PATH=~/bin:$PATH
+        sudo PATH=~/bin:$PATH
         cd ${{ steps.pwd.outputs.pwd }}
         tree ./device
         export ALLOW_MISSING_DEPENDENCIES=true
-        source build/envsetup.sh
-        lunch omni_${{ steps.var.outputs.device_code }}-eng 
-        make clean
-        make recoveryimage -j$(nproc --all)            
+        sudo source build/envsetup.sh
+        sudo lunch omni_${{ steps.var.outputs.device_code }}-eng 
+        sudo make clean
+        sudo make recoveryimage -j$(nproc --all)            
       
     - name: Upload File to Release
       uses: softprops/action-gh-release@v1
