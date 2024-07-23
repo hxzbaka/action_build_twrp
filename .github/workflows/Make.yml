@@ -61,6 +61,9 @@ jobs:
         echo "::set-output name=date::$(date +%F)"
       id: var
       
+    - name: Setup Debug Session
+      uses: csexton/debugger-action@master
+      
     - name: Install Repo
       run: |
         sudo mkdir ~/bin
