@@ -9,7 +9,7 @@ jobs:
     if: github.event.repository.owner.id == github.event.sender.id
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/catthehacker/ubuntu:runner-18.04
+      image: ghcr.io/catthehacker/ubuntu:runner-18.04-20210322@sha256:09f954b382bdefcf74b8908f90ac1b649825856d9e684e24125705fc8f369d0d
     
     steps:
     - name: Check Out
