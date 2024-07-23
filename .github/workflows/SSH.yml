@@ -1,7 +1,10 @@
-name: Make Recovery
+name: Make Recovery SSH
 
 on:
-  watch:
+  workflow_dispatch:
+    inputs:
+      LIBRARY_NAME:
+        description: 'sb'
     
 jobs:
   build:
