@@ -38,7 +38,7 @@ jobs:
         echo "RPM to DEB"
         sudo alien jdk-8u202-linux-x64.rpm
         echo "Installer OpenJdk8"
-        sudo dpkg -i jdk-8u202-linux-x64.deb
+        sudo dpkg -i jdk1.8_1.8.0202-1_amd64.deb
         
     - name: Set variables
       run: |
