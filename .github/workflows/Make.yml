@@ -21,7 +21,6 @@ jobs:
         sudo apt -y autoclean
         sudo apt clean
         sudo apt update
-        sudo apt-get -y purge temurin-*
       
     - name: Install packages
       run: |
